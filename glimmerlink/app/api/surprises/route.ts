@@ -88,6 +88,9 @@ export async function POST(req: Request) {
       flowerType: input.flowerType,
       flowerColor: input.flowerColor || "#ff3388",
       photoPosition: input.photoPosition || { x: 50, y: 50 },
+      occasion: input.occasion || "birthday",
+      anniversaryTarget: input.anniversaryTarget,
+      yearsTogether: input.yearsTogether,
     };
 
     const { error } = await sb.from("surprises").insert({

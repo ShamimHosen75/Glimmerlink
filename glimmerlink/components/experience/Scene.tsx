@@ -15,6 +15,7 @@ type Props = {
   onPop: () => void;
   candles: boolean[];
   onCandleTap: (i: number) => void;
+  cakeFlavor?: string;
 };
 
 export default function Scene(props: Props) {
@@ -30,7 +31,7 @@ export default function Scene(props: Props) {
       <directionalLight position={[3, 5, 4]} intensity={1.3} />
       <Sparkles count={60} scale={[10, 8, 4]} size={2.5} speed={0.3} color={t.balloons[0]} />
       {props.mode === "balloons" && <Balloons {...props} colors={t.balloons} />}
-      {props.mode === "cake" && <Cake candles={props.candles} onCandleTap={props.onCandleTap} theme={props.theme} />}
+      {props.mode === "cake" && <Cake candles={props.candles} onCandleTap={props.onCandleTap} theme={props.theme} cakeFlavor={props.cakeFlavor} />}
     </Canvas>
   );
 }
@@ -148,8 +149,36 @@ function Burst({ position, color }: { position: THREE.Vector3; color: string }) 
 
 /* ------------------------------- Cake ------------------------------- */
 
-function Cake({ candles, onCandleTap, theme }: { candles: boolean[]; onCandleTap: (i: number) => void; theme: ThemeId }) {
+const FLAVOR_PALETTES: Record<string, { cake: string; frosting: string; plate: string }> = {
+  vanilla: { cake: "#F7EBD4", frosting: "#FFFDF5", plate: "#EAE0D5" },
+  chocolate: { cake: "#452B1E", frosting: "#301B11", plate: "#D7CCC8" },
+  strawberry: { cake: "#F48FB1", frosting: "#FFE4E9", plate: "#F8BBD0" },
+  red_velvet: { cake: "#7F1D1D", frosting: "#FFFBF0", plate: "#E0E0E0" },
+  lemon: { cake: "#FEF08A", frosting: "#FFFDE7", plate: "#FEF9C3" },
+  mint: { cake: "#86EFAC", frosting: "#ECFDF5", plate: "#A7F3D0" },
+  blueberry: { cake: "#60A5FA", frosting: "#EFF6FF", plate: "#BFDBFE" },
+  caramel: { cake: "#D97706", frosting: "#FEF3C7", plate: "#FDE68A" },
+  coffee: { cake: "#5D4037", frosting: "#D7CCC8", plate: "#EFEBE9" },
+  pistachio: { cake: "#A3E635", frosting: "#F7FEE7", plate: "#D9F99D" },
+};
+
+function Cake({
+  candles,
+  onCandleTap,
+  theme,
+  cakeFlavor,
+}: {
+  candles: boolean[];
+  onCandleTap: (i: number) => void;
+  theme: ThemeId;
+  cakeFlavor?: string;
+}) {
   const t = THEMES[theme];
+  const flavorTheme = cakeFlavor ? FLAVOR_PALETTES[cakeFlavor] : undefined;
+  const cakeColor = flavorTheme?.cake || t.cake;
+  const frostingColor = flavorTheme?.frosting || t.frosting;
+  const plateColor = flavorTheme?.plate || t.plate;
+
   const viewport = useThree((s) => s.viewport);
   const scale = Math.min(1, viewport.width / 3.8);
   const group = useRef<THREE.Group>(null);
@@ -171,25 +200,25 @@ function Cake({ candles, onCandleTap, theme }: { candles: boolean[]; onCandleTap
       {/* plate */}
       <mesh position={[0, -0.05, 0]}>
         <cylinderGeometry args={[1.75, 1.75, 0.08, 48]} />
-        <meshStandardMaterial color={t.plate} roughness={0.4} />
+        <meshStandardMaterial color={plateColor} roughness={0.4} />
       </mesh>
       {/* bottom tier */}
       <mesh position={[0, 0.4, 0]}>
         <cylinderGeometry args={[1.3, 1.3, 0.8, 48]} />
-        <meshStandardMaterial color={t.cake} roughness={0.8} />
+        <meshStandardMaterial color={cakeColor} roughness={0.8} />
       </mesh>
       <mesh position={[0, 0.82, 0]}>
         <cylinderGeometry args={[1.33, 1.33, 0.1, 48]} />
-        <meshStandardMaterial color={t.frosting} roughness={0.5} />
+        <meshStandardMaterial color={frostingColor} roughness={0.5} />
       </mesh>
       {/* top tier */}
       <mesh position={[0, 1.15, 0]}>
         <cylinderGeometry args={[0.95, 0.95, 0.6, 48]} />
-        <meshStandardMaterial color={t.cake} roughness={0.8} />
+        <meshStandardMaterial color={cakeColor} roughness={0.8} />
       </mesh>
       <mesh position={[0, 1.47, 0]}>
         <cylinderGeometry args={[0.98, 0.98, 0.08, 48]} />
-        <meshStandardMaterial color={t.frosting} roughness={0.5} />
+        <meshStandardMaterial color={frostingColor} roughness={0.5} />
       </mesh>
       {candles.map((lit, i) => (
         <Candle key={i} x={positions[i][0]} z={positions[i][1]} lit={lit} color={t.candle} onTap={() => onCandleTap(i)} />

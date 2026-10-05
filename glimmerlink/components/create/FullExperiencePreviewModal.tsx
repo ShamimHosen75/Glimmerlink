@@ -13,6 +13,7 @@ interface FullExperiencePreviewModalProps {
   photoPosition: { x: number; y: number };
   flowerType: string | null;
   flowerColor: string;
+  occasion?: "birthday" | "anniversary";
   onClose: () => void;
 }
 
@@ -25,6 +26,7 @@ export default function FullExperiencePreviewModal({
   photoPosition,
   flowerType,
   flowerColor,
+  occasion = "birthday",
   onClose,
 }: FullExperiencePreviewModalProps) {
   const [activeView, setActiveView] = useState<"splash" | "card" | "flower">("splash");
@@ -58,7 +60,7 @@ export default function FullExperiencePreviewModal({
               Preview Your Surprise
             </h2>
             <p className="text-slate-300 font-serif italic text-sm sm:text-base leading-relaxed">
-              See exactly how <span className="text-fuchsia-300 font-bold">{receiverName || "the receiver"}</span> will experience your magical birthday surprise.
+              See exactly how <span className="text-fuchsia-300 font-bold">{receiverName || "the receiver"}</span> will experience your magical {occasion === "anniversary" ? "anniversary" : "birthday"} surprise.
             </p>
           </div>
 
@@ -124,11 +126,12 @@ export default function FullExperiencePreviewModal({
             photoUrl={photoUrl}
             photoPosition={photoPosition}
             isEditable={false}
+            occasion={occasion}
             device="desktop"
           />
         </div>
       ) : (
-        <div className="w-full max-w-lg h-[460px] flex flex-col items-center gap-4 my-auto bg-slate-900/80 p-6 rounded-3xl border border-white/10 relative">
+        <div className="w-full max-w-lg h-[460px] max-h-[82vh] flex flex-col items-center gap-4 my-auto bg-slate-900/80 p-4 sm:p-6 rounded-3xl border border-white/10 relative shadow-2xl">
           <div className="flex items-center gap-3 z-10">
             <button
               onClick={() => setActiveView("splash")}

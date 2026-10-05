@@ -4,24 +4,72 @@ import React, { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-interface Cake3DCanvasProps {
+export interface Cake3DCanvasProps {
   style: string;
   flavor: string;
   candles: number;
   receiverName: string;
+  occasion?: "birthday" | "anniversary";
 }
 
-const FLAVOR_COLORS: Record<string, string> = {
-  vanilla: "#FDF4E3",
-  chocolate: "#5D4037",
-  strawberry: "#F472B6",
-  red_velvet: "#991B1B",
-  lemon: "#FEF08A",
-  mint: "#4ADE80",
-  blueberry: "#1D4ED8",
-  caramel: "#D97706",
-  coffee: "#6F4E37",
-  pistachio: "#84CC16",
+export const FLAVOR_PALETTES: Record<
+  string,
+  {
+    cake: string;
+    frosting: string;
+    accent: string;
+  }
+> = {
+  chocolate: {
+    cake: "#3D2010",
+    frosting: "#221107",
+    accent: "#FDE68A",
+  },
+  vanilla: {
+    cake: "#FBF3E4",
+    frosting: "#FFFDF9",
+    accent: "#F59E0B",
+  },
+  strawberry: {
+    cake: "#F472B6",
+    frosting: "#FCE7F3",
+    accent: "#E11D48",
+  },
+  red_velvet: {
+    cake: "#7F1D1D",
+    frosting: "#FFFDF0",
+    accent: "#991B1B",
+  },
+  lemon: {
+    cake: "#FBBF24",
+    frosting: "#FEF9C3",
+    accent: "#D97706",
+  },
+  mint: {
+    cake: "#34D399",
+    frosting: "#D1FAE5",
+    accent: "#059669",
+  },
+  blueberry: {
+    cake: "#3B82F6",
+    frosting: "#DBEAFE",
+    accent: "#1D4ED8",
+  },
+  caramel: {
+    cake: "#D97706",
+    frosting: "#FEF3C7",
+    accent: "#B45309",
+  },
+  coffee: {
+    cake: "#54382B",
+    frosting: "#EFEBE9",
+    accent: "#3E2723",
+  },
+  pistachio: {
+    cake: "#84CC16",
+    frosting: "#ECFCCB",
+    accent: "#4D7C0F",
+  },
 };
 
 // ── CANDLE WITH FLICKERING FLAME ───────────────────────────────────────────
@@ -66,106 +114,215 @@ function Candle({ position }: { position: [number, number, number] }) {
 }
 
 // ── CAKE MESH BASED ON STYLE ───────────────────────────────────────────────
-function CakeShape({ style, flavorColor }: { style: string; flavorColor: string }) {
-  const frostingMat = useMemo(
-    () =>
-      new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(flavorColor),
-        roughness: 0.5,
-        clearcoat: 0.15,
-        clearcoatRoughness: 0.3,
-      }),
-    [flavorColor]
-  );
-
-  const whiteCreamMat = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: "#ffffff",
-        roughness: 0.6,
-      }),
-    []
-  );
-
+function CakeShape({
+  style,
+  palette,
+}: {
+  style: string;
+  palette: { cake: string; frosting: string; accent: string };
+}) {
   // Decorative border cream pearls
   const pearls = useMemo(() => {
     const list: [number, number, number][] = [];
-    const count = 12;
+    const count = 14;
+    const radius = style === "modern" || style === "tiered_square" ? 0.95 : 1.15;
     for (let i = 0; i < count; i++) {
       const a = (i * Math.PI * 2) / count;
-      list.push([Math.cos(a) * 1.15, 0.48, Math.sin(a) * 1.15]);
+      list.push([Math.cos(a) * radius, 0.48, Math.sin(a) * radius]);
     }
     return list;
-  }, []);
+  }, [style]);
 
   return (
     <group>
-      {/* Platter */}
+      {/* Platter Pedestal */}
       <mesh position={[0, -0.05, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[1.5, 1.5, 0.08, 40]} />
-        <meshStandardMaterial color="#e5e7eb" roughness={0.2} metalness={0.8} />
+        <cylinderGeometry args={[1.55, 1.55, 0.08, 48]} />
+        <meshStandardMaterial color="#e5e7eb" roughness={0.25} metalness={0.75} />
       </mesh>
       <mesh position={[0, -0.25, 0]}>
-        <cylinderGeometry args={[0.4, 0.7, 0.35, 24]} />
+        <cylinderGeometry args={[0.4, 0.7, 0.35, 32]} />
         <meshStandardMaterial color="#d1d5db" roughness={0.3} metalness={0.7} />
       </mesh>
 
-      {/* Main Cake Body */}
+      {/* Main Cake Geometries per style */}
       {style === "modern" ? (
-        <mesh position={[0, 0.42, 0]} castShadow receiveShadow>
-          <boxGeometry args={[1.8, 0.85, 1.8]} />
-          <primitive object={frostingMat} attach="material" />
-        </mesh>
+        <group>
+          {/* Square single tier */}
+          <mesh position={[0, 0.42, 0]} castShadow receiveShadow>
+            <boxGeometry args={[1.8, 0.85, 1.8]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          {/* Top glaze */}
+          <mesh position={[0, 0.85, 0]} castShadow>
+            <boxGeometry args={[1.82, 0.04, 1.82]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
+        </group>
       ) : style === "hexagon" ? (
-        <mesh position={[0, 0.42, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[1.25, 1.25, 0.85, 6]} />
-          <primitive object={frostingMat} attach="material" />
-        </mesh>
+        <group>
+          {/* Hexagon tier */}
+          <mesh position={[0, 0.42, 0]} castShadow receiveShadow>
+            <cylinderGeometry args={[1.25, 1.25, 0.85, 6]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          <mesh position={[0, 0.85, 0]}>
+            <cylinderGeometry args={[1.27, 1.27, 0.04, 6]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
+        </group>
       ) : style === "tiered_square" ? (
         <group>
+          {/* Tier 1 */}
           <mesh position={[0, 0.22, 0]} castShadow receiveShadow>
             <boxGeometry args={[1.9, 0.45, 1.9]} />
-            <primitive object={frostingMat} attach="material" />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
           </mesh>
-          <mesh position={[0, 0.65, 0]} castShadow receiveShadow>
+          <mesh position={[0, 0.45, 0]}>
+            <boxGeometry args={[1.92, 0.03, 1.92]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
+          {/* Tier 2 */}
+          <mesh position={[0, 0.68, 0]} castShadow receiveShadow>
             <boxGeometry args={[1.3, 0.45, 1.3]} />
-            <primitive object={frostingMat} attach="material" />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          <mesh position={[0, 0.91, 0]}>
+            <boxGeometry args={[1.32, 0.03, 1.32]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
           </mesh>
         </group>
-      ) : style === "grand" || style === "tower" ? (
+      ) : style === "grand" ? (
         <group>
-          <mesh position={[0, 0.2, 0]} castShadow receiveShadow>
-            <cylinderGeometry args={[1.25, 1.25, 0.4, 36]} />
-            <primitive object={frostingMat} attach="material" />
+          {/* Bottom tier */}
+          <mesh position={[0, 0.22, 0]} castShadow receiveShadow>
+            <cylinderGeometry args={[1.3, 1.3, 0.45, 48]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
           </mesh>
+          <mesh position={[0, 0.45, 0]}>
+            <cylinderGeometry args={[1.32, 1.32, 0.04, 48]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
+          {/* Top tier */}
+          <mesh position={[0, 0.65, 0]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.92, 0.92, 0.4, 48]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          <mesh position={[0, 0.85, 0]}>
+            <cylinderGeometry args={[0.94, 0.94, 0.04, 48]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
+        </group>
+      ) : style === "tower" ? (
+        <group>
+          {/* Tier 1 (Base) */}
+          <mesh position={[0, 0.18, 0]} castShadow receiveShadow>
+            <cylinderGeometry args={[1.32, 1.32, 0.36, 48]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          <mesh position={[0, 0.37, 0]}>
+            <cylinderGeometry args={[1.34, 1.34, 0.03, 48]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
+          {/* Tier 2 (Middle) */}
           <mesh position={[0, 0.55, 0]} castShadow receiveShadow>
-            <cylinderGeometry args={[0.9, 0.9, 0.4, 36]} />
-            <primitive object={frostingMat} attach="material" />
+            <cylinderGeometry args={[0.95, 0.95, 0.36, 48]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
           </mesh>
-          {style === "tower" && (
-            <mesh position={[0, 0.88, 0]} castShadow receiveShadow>
-              <cylinderGeometry args={[0.6, 0.6, 0.35, 32]} />
-              <primitive object={frostingMat} attach="material" />
-            </mesh>
-          )}
+          <mesh position={[0, 0.74, 0]}>
+            <cylinderGeometry args={[0.97, 0.97, 0.03, 48]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
+          {/* Tier 3 (Top) */}
+          <mesh position={[0, 0.92, 0]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.62, 0.62, 0.34, 48]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          <mesh position={[0, 1.1, 0]}>
+            <cylinderGeometry args={[0.64, 0.64, 0.04, 48]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
         </group>
       ) : style === "bundt" ? (
-        <mesh position={[0, 0.45, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
-          <torusGeometry args={[0.7, 0.35, 16, 40]} />
-          <primitive object={frostingMat} attach="material" />
-        </mesh>
+        <group position={[0, 0.45, 0]}>
+          <mesh rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
+            <torusGeometry args={[0.72, 0.38, 24, 48]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          {/* Glaze drizzle on bundt */}
+          <mesh position={[0, 0.28, 0]} rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.72, 0.12, 16, 48]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.15} />
+          </mesh>
+        </group>
+      ) : style === "heart" ? (
+        <group position={[0, 0.42, 0]}>
+          {/* Romantic Heart using intersecting curved lobes & center */}
+          <mesh position={[-0.45, 0, 0.2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.65, 0.65, 0.85, 36]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          <mesh position={[0.45, 0, 0.2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.65, 0.65, 0.85, 36]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          <mesh position={[0, 0, -0.28]} rotation={[0, Math.PI / 4, 0]} castShadow receiveShadow>
+            <boxGeometry args={[0.92, 0.85, 0.92]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          {/* Top heart glaze */}
+          <mesh position={[-0.45, 0.43, 0.2]}>
+            <cylinderGeometry args={[0.66, 0.66, 0.03, 36]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} />
+          </mesh>
+          <mesh position={[0.45, 0.43, 0.2]}>
+            <cylinderGeometry args={[0.66, 0.66, 0.03, 36]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} />
+          </mesh>
+        </group>
+      ) : style === "sphere" ? (
+        <group position={[0, 0.45, 0]}>
+          <mesh castShadow receiveShadow>
+            <sphereGeometry args={[0.95, 36, 36, 0, Math.PI * 2, 0, Math.PI * 0.72]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          {/* Top glaze cap */}
+          <mesh position={[0, 0.48, 0]}>
+            <sphereGeometry args={[0.96, 36, 36, 0, Math.PI * 2, 0, Math.PI * 0.35]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.2} metalness={0.15} />
+          </mesh>
+        </group>
+      ) : style === "pillow" ? (
+        <group position={[0, 0.42, 0]}>
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[1.7, 0.75, 1.7]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.5} metalness={0.05} />
+          </mesh>
+          <mesh position={[0, 0.39, 0]}>
+            <boxGeometry args={[1.72, 0.04, 1.72]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
+        </group>
       ) : (
-        /* Classic cylinder */
-        <mesh position={[0, 0.42, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[1.2, 1.2, 0.85, 40]} />
-          <primitive object={frostingMat} attach="material" />
-        </mesh>
+        /* Classic cylinder default */
+        <group>
+          <mesh position={[0, 0.42, 0]} castShadow receiveShadow>
+            <cylinderGeometry args={[1.2, 1.2, 0.85, 48]} />
+            <meshStandardMaterial color={palette.cake} roughness={0.4} metalness={0.05} />
+          </mesh>
+          {/* Top frosting layer */}
+          <mesh position={[0, 0.85, 0]}>
+            <cylinderGeometry args={[1.22, 1.22, 0.04, 48]} />
+            <meshStandardMaterial color={palette.frosting} roughness={0.25} metalness={0.1} />
+          </mesh>
+        </group>
       )}
 
       {/* Decorative cream pearls around top */}
       {pearls.map((pos, idx) => (
-        <mesh key={idx} position={pos} material={whiteCreamMat}>
-          <sphereGeometry args={[0.07, 10, 10]} />
+        <mesh key={idx} position={pos}>
+          <sphereGeometry args={[0.07, 12, 12]} />
+          <meshStandardMaterial color={palette.accent} roughness={0.3} metalness={0.2} />
         </mesh>
       ))}
     </group>
@@ -173,7 +330,13 @@ function CakeShape({ style, flavorColor }: { style: string; flavorColor: string 
 }
 
 // ── NAME BANNER BEHIND CAKE ────────────────────────────────────────────────
-function BirthdayBanner({ receiverName }: { receiverName: string }) {
+function BirthdayBanner({
+  receiverName,
+  occasion = "birthday",
+}: {
+  receiverName: string;
+  occasion?: "birthday" | "anniversary";
+}) {
   const canvasTexture = useMemo(() => {
     if (typeof document === "undefined") return null;
     const canvas = document.createElement("canvas");
@@ -194,18 +357,33 @@ function BirthdayBanner({ receiverName }: { receiverName: string }) {
         ctx.fillRect(x, 122, 4, 4);
       }
 
-      ctx.fillStyle = "#ffd54f";
-      ctx.font = "italic bold 22px Georgia, serif";
-      ctx.textAlign = "center";
-      ctx.fillText("✦ Happy Birthday ✦", 256, 48);
+      if (occasion === "anniversary") {
+        ctx.fillStyle = "#ffd54f";
+        ctx.font = "italic 16px Georgia, serif";
+        ctx.textAlign = "center";
+        ctx.fillText("✦ Happy ✦", 256, 36);
 
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 32px sans-serif";
-      ctx.fillText((receiverName || "YOU").toUpperCase(), 256, 95);
+        ctx.font = "italic bold 23px Georgia, serif";
+        ctx.fillText("Anniversary", 256, 64);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 28px sans-serif";
+        const displayName = receiverName ? receiverName.toUpperCase() : "SHAIRA";
+        ctx.fillText(displayName, 256, 102);
+      } else {
+        ctx.fillStyle = "#ffd54f";
+        ctx.font = "italic bold 22px Georgia, serif";
+        ctx.textAlign = "center";
+        ctx.fillText("✦ Happy Birthday ✦", 256, 48);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 32px sans-serif";
+        ctx.fillText((receiverName || "YOU").toUpperCase(), 256, 95);
+      }
     }
     const texture = new THREE.CanvasTexture(canvas);
     return texture;
-  }, [receiverName]);
+  }, [receiverName, occasion]);
 
   if (!canvasTexture) return null;
 
@@ -218,8 +396,8 @@ function BirthdayBanner({ receiverName }: { receiverName: string }) {
 }
 
 // ── SCENE ROTATING CAKE ────────────────────────────────────────────────────
-function CakeScene({ style, flavor, candles, receiverName }: Cake3DCanvasProps) {
-  const flavorColor = FLAVOR_COLORS[flavor] || FLAVOR_COLORS.vanilla;
+function CakeScene({ style, flavor, candles, receiverName, occasion }: Cake3DCanvasProps) {
+  const palette = FLAVOR_PALETTES[flavor] || FLAVOR_PALETTES.chocolate;
   const cakeGroup = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
@@ -228,15 +406,24 @@ function CakeScene({ style, flavor, candles, receiverName }: Cake3DCanvasProps) 
     }
   });
 
+  // Top height calculation so candles stay right on top surface
+  const candleY = useMemo(() => {
+    if (style === "tower") return 1.12;
+    if (style === "grand") return 0.87;
+    if (style === "tiered_square") return 0.93;
+    if (style === "sphere") return 0.98;
+    return 0.87;
+  }, [style]);
+
   const candleList = useMemo(() => {
     const list: [number, number, number][] = [];
     const count = Math.min(Math.max(1, candles), 5);
     for (let i = 0; i < count; i++) {
-      const x = (i - (count - 1) / 2) * 0.25;
-      list.push([x, 0.85, 0]);
+      const x = (i - (count - 1) / 2) * 0.24;
+      list.push([x, candleY, 0]);
     }
     return list;
-  }, [candles]);
+  }, [candles, candleY]);
 
   return (
     <group position={[0, -0.3, 0]}>
@@ -257,7 +444,7 @@ function CakeScene({ style, flavor, candles, receiverName }: Cake3DCanvasProps) 
 
       {/* Rotating Cake Group */}
       <group ref={cakeGroup} position={[0, -0.5, 0]}>
-        <CakeShape style={style} flavorColor={flavorColor} />
+        <CakeShape style={style} palette={palette} />
         {candleList.map((pos, idx) => (
           <Candle key={idx} position={pos} />
         ))}
@@ -276,7 +463,7 @@ function CakeScene({ style, flavor, candles, receiverName }: Cake3DCanvasProps) 
       </mesh>
 
       {/* Background Banner */}
-      <BirthdayBanner receiverName={receiverName} />
+      <BirthdayBanner receiverName={receiverName} occasion={occasion} />
     </group>
   );
 }
@@ -285,14 +472,15 @@ export default function Cake3DCanvas(props: Cake3DCanvasProps) {
   return (
     <div className="w-full h-full relative">
       <Canvas
+        key={`${props.style}-${props.flavor}-${props.occasion || "birthday"}`}
         camera={{ position: [0, 0.9, 4.2], fov: 46 }}
         dpr={[1, 2]}
         style={{ width: "100%", height: "100%", touchAction: "none" }}
       >
-        <ambientLight intensity={1.0} color="#fff6eb" />
-        <directionalLight position={[4, 6, 4]} intensity={1.4} color="#fff8e7" castShadow />
-        <pointLight position={[-3, 2, 2]} intensity={0.6} color="#f472b6" />
-        <pointLight position={[3, 2, 2]} intensity={0.6} color="#fbbf24" />
+        <ambientLight intensity={1.1} color="#fff6eb" />
+        <directionalLight position={[4, 6, 4]} intensity={1.5} color="#fff8e7" castShadow />
+        <pointLight position={[-3, 2, 2]} intensity={0.7} color="#f472b6" />
+        <pointLight position={[3, 2, 2]} intensity={0.7} color="#fbbf24" />
         <CakeScene {...props} />
       </Canvas>
     </div>

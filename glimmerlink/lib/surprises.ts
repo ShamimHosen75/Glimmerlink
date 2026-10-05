@@ -85,6 +85,9 @@ export async function getSurprise(id: string): Promise<SurpriseLookup> {
       flowerType: meta.flowerType ?? "rose",
       flowerColor: meta.flowerColor || "#ff3388",
       photoPosition: meta.photoPosition || { x: 50, y: 50 },
+      occasion: meta.occasion || "birthday",
+      anniversaryTarget: meta.anniversaryTarget,
+      yearsTogether: meta.yearsTogether,
     },
   };
 }

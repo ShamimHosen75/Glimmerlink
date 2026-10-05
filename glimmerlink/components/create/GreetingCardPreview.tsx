@@ -17,6 +17,7 @@ interface CardTheme {
   quoteBg: string;
   quoteBorder: string;
   heartColor: string;
+  accentColor: string;
 }
 
 const CARD_THEMES: Record<CardStyleId, CardTheme> = {
@@ -32,7 +33,8 @@ const CARD_THEMES: Record<CardStyleId, CardTheme> = {
     cakeIcing: "#F89FB6",
     quoteBg: "rgba(255,192,203,0.15)",
     quoteBorder: "rgba(255,182,193,0.25)",
-    heartColor: "#FF7A8A",
+    heartColor: "#E11D48",
+    accentColor: "#E11D48",
   },
   cute: {
     cardBg: "#FFF0F5",
@@ -46,35 +48,38 @@ const CARD_THEMES: Record<CardStyleId, CardTheme> = {
     cakeIcing: "#FFD1DC",
     quoteBg: "rgba(255,182,193,0.15)",
     quoteBorder: "rgba(255,182,193,0.3)",
-    heartColor: "#FF9A9E",
+    heartColor: "#F43F5E",
+    accentColor: "#F43F5E",
   },
   minimal: {
     cardBg: "#FFFFFF",
-    paperBgStart: "#FCFCFC",
-    paperBgEnd: "#F6F6F6",
-    headingColor: "#1A1A1A",
-    textColor: "#333333",
-    scriptGradientStart: "#4D4D4D",
-    scriptGradientEnd: "#1A1A1A",
-    standColor: "#CCCCCC",
-    cakeIcing: "#EAEAEA",
-    quoteBg: "rgba(0,0,0,0.03)",
-    quoteBorder: "rgba(0,0,0,0.08)",
-    heartColor: "#666666",
+    paperBgStart: "#FFFFFF",
+    paperBgEnd: "#F8FAFC",
+    headingColor: "#0F172A",
+    textColor: "#334155",
+    scriptGradientStart: "#0F172A",
+    scriptGradientEnd: "#334155",
+    standColor: "#94A3B8",
+    cakeIcing: "#FDA4AF",
+    quoteBg: "rgba(15,23,42,0.03)",
+    quoteBorder: "rgba(15,23,42,0.08)",
+    heartColor: "#E11D48",
+    accentColor: "#E11D48",
   },
   floral: {
     cardBg: "#F4F7F4",
     paperBgStart: "#FAFAFA",
     paperBgEnd: "#EEF2EE",
-    headingColor: "#2E3A2F",
-    textColor: "#4A5A4B",
-    scriptGradientStart: "#8FBC8F",
-    scriptGradientEnd: "#556B2F",
+    headingColor: "#1B3B2B",
+    textColor: "#2E4738",
+    scriptGradientStart: "#15803D",
+    scriptGradientEnd: "#047857",
     standColor: "#BC8F8F",
-    cakeIcing: "#D8BFD8",
-    quoteBg: "rgba(143,188,143,0.15)",
-    quoteBorder: "rgba(143,188,143,0.25)",
-    heartColor: "#8FBC8F",
+    cakeIcing: "#A7F3D0",
+    quoteBg: "rgba(21,128,61,0.08)",
+    quoteBorder: "rgba(21,128,61,0.2)",
+    heartColor: "#15803D",
+    accentColor: "#15803D",
   },
   romantic: {
     cardBg: "#FFF2F2",
@@ -82,13 +87,14 @@ const CARD_THEMES: Record<CardStyleId, CardTheme> = {
     paperBgEnd: "#FFE6E6",
     headingColor: "#4A1515",
     textColor: "#5A2525",
-    scriptGradientStart: "#E52D27",
-    scriptGradientEnd: "#B31217",
+    scriptGradientStart: "#BE123C",
+    scriptGradientEnd: "#E11D48",
     standColor: "#C5A059",
     cakeIcing: "#FF4D4D",
     quoteBg: "rgba(229,45,39,0.08)",
     quoteBorder: "rgba(229,45,39,0.18)",
-    heartColor: "#E52D27",
+    heartColor: "#E11D48",
+    accentColor: "#E11D48",
   },
 };
 
@@ -105,6 +111,7 @@ export default function GreetingCardPreview({
   onPhotoPositionChange,
   isEditable = true,
   device = "desktop",
+  occasion = "birthday",
 }: {
   receiverName: string;
   senderName: string;
@@ -115,6 +122,7 @@ export default function GreetingCardPreview({
   onPhotoPositionChange?: (pos: { x: number; y: number }) => void;
   isEditable?: boolean;
   device?: "desktop" | "tablet" | "mobile";
+  occasion?: "birthday" | "anniversary";
 }) {
   const theme = CARD_THEMES[cardStyle] || CARD_THEMES.luxury;
   const imageRef = useRef<HTMLDivElement>(null);
@@ -186,7 +194,7 @@ export default function GreetingCardPreview({
 
   // Highlight romantic/festive words
   const highlightWords = (text: string) => {
-    const keywords = ["endless joy", "beautiful moments", "love", "joy", "happiness", "magical moments", "special"];
+    const keywords = ["endless joy", "beautiful moments", "love", "joy", "happiness", "magical moments", "special", "rock", "everything", "favorite adventure", "home"];
     const regex = new RegExp(`(${keywords.join("|")})`, "gi");
     const parts = text.split(regex);
     return parts.map((part, i) => {
@@ -194,12 +202,8 @@ export default function GreetingCardPreview({
         return (
           <span
             key={i}
-            className="font-bold"
-            style={{
-              background: `linear-gradient(to right, ${theme.scriptGradientStart}, ${theme.scriptGradientEnd})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
+            className="font-bold inline-block"
+            style={{ color: theme.accentColor }}
           >
             {part}
           </span>
@@ -215,12 +219,12 @@ export default function GreetingCardPreview({
   return (
     <div className={`w-full ${containerWidthClass} mx-auto select-none transition-all duration-300`}>
       <div
-        className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.45)] flex flex-col md:flex-row relative z-10 border"
+        className="w-full rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)] flex flex-col md:flex-row relative z-10 border"
         style={{ backgroundColor: theme.cardBg, borderColor: theme.quoteBorder }}
       >
         {/* LEFT PAGE OF CARD */}
         <div
-          className="w-full md:w-[50%] p-6 sm:p-7 md:p-8 flex flex-col justify-between relative overflow-hidden"
+          className="w-full md:w-[50%] p-3.5 sm:p-5 md:p-6 lg:p-7 flex flex-col justify-between relative overflow-hidden"
           style={{
             backgroundImage: `linear-gradient(to bottom, ${theme.paperBgStart}, ${theme.paperBgEnd})`,
           }}
@@ -235,54 +239,58 @@ export default function GreetingCardPreview({
           />
 
           {/* Decorative floating hearts/stars */}
-          <div className="absolute top-4 right-5 text-sm opacity-35" style={{ color: theme.heartColor }}>
+          <div className="absolute top-3.5 right-4 sm:top-4 sm:right-5 text-sm opacity-35" style={{ color: theme.heartColor }}>
             ♥
           </div>
-          <div className="absolute top-10 left-5 text-xs opacity-25" style={{ color: theme.standColor }}>
+          <div className="absolute top-8 left-4 sm:top-10 sm:left-5 text-xs opacity-25" style={{ color: theme.standColor }}>
             ✦
           </div>
 
           {/* Card Header */}
           <div className="relative z-10 space-y-0.5">
             <h1
-              className="font-playfair text-[26px] sm:text-[32px] md:text-[38px] leading-tight"
+              className="font-playfair text-[20px] sm:text-[26px] md:text-[32px] leading-tight"
               style={{ color: theme.headingColor }}
             >
               Happy
             </h1>
             <h2
-              className="font-vibes text-[44px] sm:text-[54px] md:text-[66px] leading-[0.85] bg-clip-text text-transparent py-1 pl-1"
+              className={`font-vibes ${
+                occasion === "anniversary"
+                  ? "text-[28px] xs:text-[34px] sm:text-[40px] md:text-[44px] lg:text-[48px]"
+                  : "text-[32px] xs:text-[38px] sm:text-[46px] md:text-[52px] lg:text-[56px]"
+              } leading-[0.95] py-0.5 tracking-tight whitespace-nowrap`}
               style={{
-                backgroundImage: `linear-gradient(to bottom, ${theme.scriptGradientStart}, ${theme.scriptGradientEnd})`,
+                color: theme.accentColor,
               }}
             >
-              Birthday!
+              {occasion === "anniversary" ? "Anniversary!" : "Birthday!"}
             </h2>
             <div
-              className="w-12 h-[1.5px] mt-2.5 rounded-full"
+              className="w-10 sm:w-12 h-[1.5px] mt-2 rounded-full"
               style={{ backgroundColor: `${theme.standColor}55` }}
             />
           </div>
 
           {/* Message body */}
-          <div className="relative z-10 py-4 my-auto">
+          <div className="relative z-10 py-3 sm:py-4 my-auto">
             <p
-              className="font-cormorant text-[15px] sm:text-[16px] md:text-[18px] leading-relaxed"
+              className="font-cormorant text-[14px] sm:text-[16px] md:text-[18px] leading-relaxed"
               style={{ color: theme.textColor }}
             >
-              {message ? highlightWords(message) : "Wishing you a day filled with endless joy and love."}
+              {message
+                ? highlightWords(message)
+                : occasion === "anniversary"
+                ? "Wishing you endless love, joy, and magical years together."
+                : "Wishing you a day filled with endless joy and love."}
             </p>
 
-            <div className="mt-3 flex items-center gap-1.5">
+            <div className="mt-2.5 sm:mt-3 flex items-center gap-1.5 flex-wrap">
               <span
-                className="font-handwritten text-[20px] sm:text-[24px] leading-none"
-                style={{
-                  background: `linear-gradient(to right, ${theme.scriptGradientStart}, ${theme.scriptGradientEnd})`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
+                className="font-handwritten text-[18px] sm:text-[22px] md:text-[24px] leading-none font-semibold inline-block"
+                style={{ color: theme.accentColor }}
               >
-                You&apos;re truly special!
+                {occasion === "anniversary" ? "Celebrating our love!" : "You're truly special!"}
               </span>
               <span style={{ color: theme.heartColor }} className="text-xs">
                 ♥
@@ -291,9 +299,9 @@ export default function GreetingCardPreview({
           </div>
 
           {/* Card Cake + Quote Illustration */}
-          <div className="relative z-10 flex items-center justify-between gap-3 pt-2">
+          <div className="relative z-10 flex items-center justify-between gap-2 sm:gap-3 pt-2">
             {/* Mini Cake Vector */}
-            <div className="w-[70px] h-[75px] shrink-0">
+            <div className="w-[56px] sm:w-[68px] h-[60px] sm:h-[72px] shrink-0">
               <svg viewBox="0 0 120 140" className="w-full h-full drop-shadow-sm">
                 <path d="M30 115 h60 v3 h-60 z" fill={theme.standColor} />
                 <path d="M45 118 h30 l-6 12 h-18 z" fill={theme.standColor} opacity="0.9" />
@@ -316,21 +324,21 @@ export default function GreetingCardPreview({
 
             {/* Quote box */}
             <div
-              className="rounded-xl p-2.5 sm:p-3 text-center border text-xs"
+              className="rounded-xl p-2 sm:p-2.5 text-center border text-[11px] sm:text-xs flex-1"
               style={{ backgroundColor: theme.quoteBg, borderColor: theme.quoteBorder }}
             >
               <p className="font-playfair italic leading-snug" style={{ color: theme.headingColor }}>
-                Enjoy your day to the fullest!
+                {occasion === "anniversary" ? "Cherishing every moment together." : "Enjoy your day to the fullest!"}
               </p>
             </div>
           </div>
 
           {/* Footer Signature */}
-          <div className="mt-4 pt-3 border-t flex items-center justify-between relative z-10" style={{ borderColor: `${theme.standColor}33` }}>
-            <span className="font-handwritten text-[18px] sm:text-[20px]" style={{ color: `${theme.headingColor}cc` }}>
-              With lots of love
+          <div className="mt-3.5 sm:mt-4 pt-2.5 sm:pt-3 border-t flex items-center justify-between relative z-10" style={{ borderColor: `${theme.standColor}33` }}>
+            <span className="font-handwritten text-[16px] sm:text-[19px]" style={{ color: `${theme.headingColor}cc` }}>
+              {occasion === "anniversary" ? "With all my heart" : "With lots of love"}
             </span>
-            <span className="font-playfair text-xs font-bold tracking-wide" style={{ color: theme.headingColor }}>
+            <span className="font-playfair text-[11px] sm:text-xs font-bold tracking-wide" style={{ color: theme.headingColor }}>
               {receiverName || "You"}
             </span>
           </div>
@@ -341,22 +349,22 @@ export default function GreetingCardPreview({
           ref={imageRef}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
-          className={`w-full md:w-[50%] h-[260px] md:h-auto min-h-[280px] relative overflow-hidden flex-shrink-0 group/img ${
+          className={`w-full md:w-[50%] h-[210px] sm:h-[260px] md:h-auto min-h-[210px] sm:min-h-[280px] relative overflow-hidden flex-shrink-0 group/img ${
             isEditable ? "cursor-grab active:cursor-grabbing select-none" : ""
           }`}
-          style={{ backgroundColor: "#1e1528" }}
+          style={{ backgroundColor: "#1e1528", touchAction: isEditable ? "none" : "auto" }}
         >
           <img
             src={activePhoto}
-            alt={`Birthday greeting portrait for ${receiverName}`}
+            alt={occasion === "anniversary" ? `Anniversary greeting portrait for ${receiverName}` : `Birthday greeting portrait for ${receiverName}`}
             className="w-full h-full object-cover transition-all"
             style={{ objectPosition: `${photoPosition.x}% ${photoPosition.y}%` }}
           />
 
           {isEditable && (
-            <div className="absolute inset-0 bg-black/25 opacity-0 group-hover/img:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center pointer-events-none">
-              <div className="bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full text-white text-[11px] font-semibold flex items-center gap-1.5 border border-white/20 shadow-lg">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <div className="absolute inset-0 bg-black/25 opacity-75 sm:opacity-0 sm:group-hover/img:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center pointer-events-none">
+              <div className="bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full text-white text-[10px] sm:text-[11px] font-semibold flex items-center gap-1.5 border border-white/20 shadow-lg">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20" />
                 </svg>
                 Drag photo to position

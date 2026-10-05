@@ -19,6 +19,9 @@ export const surpriseInput = z.object({
   flowerType: z.string().nullable().optional().default("rose"),
   flowerColor: z.string().optional().default("#ff3388"),
   photoPosition: z.object({ x: z.number(), y: z.number() }).optional(),
+  occasion: z.enum(["birthday", "anniversary"]).optional().default("birthday"),
+  anniversaryTarget: z.enum(["partner", "couple"]).optional(),
+  yearsTogether: z.string().optional(),
 });
 
 export type SurpriseInput = z.infer<typeof surpriseInput>;

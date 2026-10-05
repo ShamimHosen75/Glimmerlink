@@ -5,19 +5,30 @@ import Link from "next/link";
 import { BRAND } from "@/lib/config";
 
 /* ─── Balloon data ──────────────────────────────────────────────────── */
-const BALLOONS = [
+/* ─── Balloon data (Matched to 3D Atmospheric Screenshot) ─────────── */
+interface BalloonData {
+  id: number;
+  color: string;
+  size: number;
+  x: string;
+  cls: string;
+  tilt?: number;
+  depth?: number;
+}
+
+const BALLOONS: BalloonData[] = [
   // left side
-  { id: 1, color: "#e040fb", size: 90,  x: "4%",  y: "10%", cls: "balloon-1" },
-  { id: 2, color: "#4cceac", size: 110, x: "2%",  y: "45%", cls: "balloon-2" },
-  { id: 3, color: "#f6c453", size: 70,  x: "11%", y: "75%", cls: "balloon-3" },
-  { id: 4, color: "#e040fb", size: 50,  x: "20%", y: "20%", cls: "balloon-4" },
-  { id: 5, color: "#c84b31", size: 85,  x: "7%",  y: "88%", cls: "balloon-5" },
+  { id: 1, color: "#165028", size: 110, x: "4%",  cls: "balloon-rise-2", tilt: -6, depth: 1.2 },
+  { id: 2, color: "#cca022", size: 90,  x: "12%", cls: "balloon-rise-3", tilt: -8, depth: 1.1 },
+  { id: 3, color: "#1d758f", size: 58,  x: "18%", cls: "balloon-rise-8", tilt: 8,  depth: 0.7 },
+  { id: 4, color: "#6b581c", size: 66,  x: "8%",  cls: "balloon-rise-10", tilt: -4, depth: 0.75 },
+  { id: 5, color: "#4f2263", size: 76,  x: "22%", cls: "balloon-rise-9", tilt: 5,  depth: 0.9 },
   // right side
-  { id: 6,  color: "#c020e0", size: 80,  x: "82%", y: "8%",  cls: "balloon-6" },
-  { id: 7,  color: "#4cceac", size: 50,  x: "91%", y: "35%", cls: "balloon-7" },
-  { id: 8,  color: "#e040fb", size: 100, x: "86%", y: "60%", cls: "balloon-8" },
-  { id: 9,  color: "#f6c453", size: 60,  x: "78%", y: "82%", cls: "balloon-9" },
-  { id: 10, color: "#8b5cf6", size: 75,  x: "94%", y: "70%", cls: "balloon-10" },
+  { id: 6,  color: "#c0366b", size: 125, x: "78%", cls: "balloon-rise-1", tilt: 10, depth: 1.25 },
+  { id: 7,  color: "#af4024", size: 75,  x: "70%", cls: "balloon-rise-6", tilt: -5, depth: 0.85 },
+  { id: 8,  color: "#1a5e2f", size: 52,  x: "88%", cls: "balloon-rise-7", tilt: 6,  depth: 0.65 },
+  { id: 9,  color: "#692982", size: 82,  x: "84%", cls: "balloon-rise-5", tilt: -9, depth: 0.95 },
+  { id: 10, color: "#7a3782", size: 86,  x: "93%", cls: "balloon-rise-12", tilt: 7, depth: 1.05 },
 ];
 
 /* ─── Sparkle positions ─────────────────────────────────────────────── */
@@ -38,28 +49,60 @@ function getImpact(name: string): string {
 }
 
 /* ─── SVG Balloon component ─────────────────────────────────────────── */
-function Balloon({ color, size }: { color: string; size: number }) {
-  const h = size;
-  const w = size * 0.82;
-  const shine = "rgba(255,255,255,0.3)";
+function Balloon({
+  color,
+  size,
+  tilt = 0,
+  depth = 1,
+}: {
+  color: string;
+  size: number;
+  tilt?: number;
+  depth?: number;
+}) {
+  const w = size * 0.9;
+  const h = size * 2.3;
+  const gradId = `home-bg-${color.replace(/[^a-zA-Z0-9]/g, "")}-${size}-${Math.round(depth * 10)}`;
   return (
-    <svg width={w} height={h + 20} viewBox={`0 0 ${w} ${h + 20}`} aria-hidden>
-      {/* main balloon body */}
-      <ellipse cx={w / 2} cy={h * 0.48} rx={w / 2} ry={h * 0.52} fill={color} />
-      {/* highlight */}
-      <ellipse cx={w * 0.35} cy={h * 0.3} rx={w * 0.12} ry={h * 0.1} fill={shine} />
-      {/* knot */}
-      <polygon
-        points={`${w / 2 - 4},${h} ${w / 2 + 4},${h} ${w / 2},${h + 8}`}
-        fill={color}
-      />
-      {/* string */}
-      <line
-        x1={w / 2} y1={h + 8}
-        x2={w / 2 + 4} y2={h + 20}
-        stroke="rgba(255,255,255,0.25)"
+    <svg
+      width={w}
+      height={h}
+      viewBox="0 0 100 240"
+      className="overflow-visible pointer-events-none"
+      style={{
+        transform: `rotate(${tilt}deg)`,
+        opacity: depth < 0.7 ? 0.55 : depth < 1 ? 0.8 : 0.96,
+        filter: depth > 1 ? "drop-shadow(0 15px 25px rgba(0,0,0,0.65))" : "drop-shadow(0 8px 15px rgba(0,0,0,0.45))",
+      }}
+      aria-hidden
+    >
+      <defs>
+        {/* Realistic 3D sphere lighting from top-right matching screenshot */}
+        <radialGradient id={gradId} cx="68%" cy="25%" r="72%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.45" />
+          <stop offset="12%" stopColor={color} stopOpacity="1" />
+          <stop offset="65%" stopColor={color} stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#08020e" stopOpacity="0.95" />
+        </radialGradient>
+      </defs>
+
+      {/* Long thin string dangling down under balloon (matching screenshot) */}
+      <path
+        d="M 50,96 Q 48,145 52,190 T 49,235"
+        fill="none"
+        stroke="rgba(255,255,255,0.22)"
         strokeWidth="1"
       />
+
+      {/* Balloon Knot (little cone pointing down) */}
+      <polygon points="46,92 54,92 50,97" fill={color} opacity="0.95" />
+
+      {/* 3D Balloon Body: Ellipsoid shape, perfectly rounded dome, zero crop */}
+      <ellipse cx="50" cy="50" rx="38" ry="44" fill={`url(#${gradId})`} />
+
+      {/* Specular light spot on top-right (matching screenshot) */}
+      <circle cx="68" cy="24" r="3.8" fill="#fffbe8" opacity="0.75" />
+      <circle cx="68" cy="24" r="1.6" fill="#ffffff" opacity="0.95" />
     </svg>
   );
 }
@@ -113,17 +156,19 @@ export default function Home() {
         </div>
       ))}
 
-      {/* ── Floating Balloons ── */}
-      {mounted && BALLOONS.map((b) => (
-        <div
-          key={b.id}
-          aria-hidden
-          className={`balloon-wrap pointer-events-none absolute ${b.cls}`}
-          style={{ left: b.x, top: b.y }}
-        >
-          <Balloon color={b.color} size={b.size} />
-        </div>
-      ))}
+      {/* ── Live Floating Balloons (Down to Up) ── */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {mounted && BALLOONS.map((b) => (
+          <div
+            key={b.id}
+            aria-hidden
+            className={`pointer-events-none absolute ${b.cls}`}
+            style={{ left: b.x, bottom: "-140px" }}
+          >
+            <Balloon color={b.color} size={b.size} tilt={b.tilt} depth={b.depth} />
+          </div>
+        ))}
+      </div>
 
       {/* ─────────────────────────── NAV ────────────────────────────── */}
       <header className="relative z-10 flex items-center justify-between px-6 py-4 md:px-10">
@@ -185,7 +230,7 @@ export default function Home() {
 
         {/* Glass card */}
         <div
-          className="glass-card w-full max-w-lg rounded-3xl px-8 pb-8 pt-7"
+          className="glass-card w-full max-w-lg rounded-3xl px-4 sm:px-8 pb-6 sm:pb-8 pt-6 sm:pt-7"
           style={{ maxWidth: 520 }}
         >
           {/* Logo inside card */}
@@ -356,7 +401,7 @@ export default function Home() {
 
                 {/* CTA */}
                 <Link
-                  href={`/create?name=${encodeURIComponent(trimmedName)}&type=${activeTab}`}
+                  href={`/create?sender=${encodeURIComponent(trimmedName)}&name=${encodeURIComponent(trimmedName)}&occasion=${activeTab}&type=${activeTab}`}
                   id="btn-build-it"
                   className="btn-glow mt-4 flex w-full items-center justify-between rounded-xl px-5 py-3.5 font-bold text-white"
                 >
@@ -429,7 +474,7 @@ export default function Home() {
           className="mt-24 w-full max-w-3xl"
           aria-labelledby="how-heading"
         >
-          <div className="glass-card rounded-3xl p-8 md:p-12">
+          <div className="glass-card rounded-3xl p-5 sm:p-8 md:p-12">
             <h2
               id="how-heading"
               className="mb-4 font-display text-3xl text-white md:text-4xl"

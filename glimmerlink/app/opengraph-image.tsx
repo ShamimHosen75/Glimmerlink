@@ -1,6 +1,9 @@
 import { ImageResponse } from "next/og";
 import { BRAND } from "@/lib/config";
 
+// Edge runtime avoids the static-prerender step that fails on Windows paths with spaces.
+export const runtime = "edge";
+
 export const alt = "A birthday surprise is waiting";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

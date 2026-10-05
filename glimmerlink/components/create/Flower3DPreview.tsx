@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 interface FlowerModelProps {
@@ -277,16 +277,24 @@ function SparkleParticles({ color }: { color: string }) {
 // ── MAIN ANIMATED FLOWER SCENE ─────────────────────────────────────────────
 function FlowerScene({ type, color }: FlowerModelProps) {
   const flowerRef = useRef<THREE.Group>(null);
+  const { viewport } = useThree();
+
+  // Responsive scale factor for mobile devices
+  const responsiveScale = useMemo(() => {
+    // When viewport.width is narrower (e.g. mobile portrait), scale down slightly
+    // so petals and head never touch or crop against canvas borders
+    return Math.min(1.0, Math.max(0.75, viewport.width / 2.6));
+  }, [viewport.width]);
 
   useFrame(({ clock }) => {
     if (!flowerRef.current) return;
     const t = clock.getElapsedTime();
-    flowerRef.current.position.y = -0.15 + Math.sin(t * 1.6) * 0.05;
+    flowerRef.current.position.y = -0.38 + Math.sin(t * 1.5) * 0.035;
     flowerRef.current.rotation.y = t * 0.35;
   });
 
   return (
-    <group ref={flowerRef} position={[0, -0.15, 0]}>
+    <group ref={flowerRef} position={[0, -0.38, 0]} scale={responsiveScale}>
       <StemAndLeaves />
       {type === "rose" && <RoseHead color={color} />}
       {type === "tulip" && <TulipHead color={color} />}
@@ -319,9 +327,9 @@ export default function Flower3DPreview({
   return (
     <div className="w-full h-full relative overflow-hidden">
       <Canvas
-        camera={{ position: [0, 0.15, 2.2], fov: 46 }}
+        camera={{ position: [0, 0.05, 2.75], fov: 46 }}
         dpr={[1, 2]}
-        style={{ width: "100%", height: "100%", touchAction: "pan-y" }}
+        style={{ width: "100%", height: "100%", touchAction: "none" }}
       >
         <ambientLight intensity={1.3} />
         <directionalLight position={[2, 4, 3]} intensity={1.8} />
