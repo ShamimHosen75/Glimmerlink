@@ -1,4 +1,4 @@
-# Glimmerlink: interactive 3D birthday surprise links
+# Surprisly: interactive 3D birthday surprise links
 
 Starter codebase (Phases 0 to 4). Rename the brand in `lib/config.ts`.
 

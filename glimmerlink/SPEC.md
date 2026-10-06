@@ -1,4 +1,4 @@
-# SPEC: Glimmerlink (working name)
+# SPEC: Surprisly
 
 > AI assistants: read this whole file before every task. Follow the rules section strictly.
 
