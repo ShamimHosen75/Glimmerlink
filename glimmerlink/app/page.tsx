@@ -913,16 +913,16 @@ export default function Home() {
         </section>
 
         {/* ═══════════════ FINAL CTA ═══════════════ */}
-        <section className="mt-24 w-full max-w-xl text-center">
-          <RevealSection>
-            <div className="rounded-3xl p-8 md:p-12"
+        <section className="mt-24 w-full max-w-2xl text-center">
+          <RevealSection className="w-full">
+            <div className="w-full rounded-3xl p-8 sm:p-10 md:p-12"
               style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(192,32,224,0.3) 0%, rgba(139,92,246,0.1) 50%, transparent 80%), rgba(255,255,255,0.04)",
                 border: "1px solid rgba(192,32,224,0.25)" }}>
               <div className="mb-4 text-5xl">🎂</div>
-              <h2 className="mb-3 font-display text-3xl text-white md:text-4xl">
+              <h2 className="mb-3 font-display text-3xl text-white md:text-4xl text-balance">
                 Ready to make someone&rsquo;s day?
               </h2>
-              <p className="mb-7 text-white/60">
+              <p className="mb-7 text-white/60 text-base md:text-lg">
                 Build a 3D birthday surprise in 3 minutes. No app needed.
               </p>
               <Link href="/create" id="final-cta"
