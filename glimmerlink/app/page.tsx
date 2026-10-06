@@ -46,62 +46,146 @@ const BOKEH = [
 
 /* ─── Wish categories ─────────────────────────────────────── */
 const WISH_CATEGORIES = [
-  { id: "best-friend", icon: "✨", label: "Best Friend",   color: "#e040fb",
+  {
+    id: "best-friend", icon: "✨", label: "Best Friend", color: "#e040fb",
+    tag: "For Your Bestie",
     wishes: [
-      "You light up every room and every group chat 🌟",
-      "Here's to a year as amazing as you've been to me 🥂",
-      "No distance, no time zone can dull what we have 💫",
-      "May your birthday be as effortlessly cool as you are 🎉",
-    ]},
-  { id: "sister", icon: "💗", label: "Sister",          color: "#f472b6",
+      { text: "You light up every room and every group chat 🌟",            tone: "Warm" },
+      { text: "Here's to a year as amazing as you've been to me 🥂",        tone: "Celebratory" },
+      { text: "No distance, no time zone can dull what we have 💫",         tone: "Heartfelt" },
+      { text: "May your birthday be as effortlessly cool as you are 🎉",    tone: "Playful" },
+      { text: "Thank you for being the friend who shows up — always 🤍",    tone: "Grateful" },
+      { text: "You've turned my worst days into our funniest stories 😂",    tone: "Funny" },
+      { text: "A whole year of being fabulous — here's to many more ✨",     tone: "Celebratory" },
+      { text: "Side by side or miles apart, you're always in my heart 💜",  tone: "Heartfelt" },
+    ],
+  },
+  {
+    id: "sister", icon: "💗", label: "Sister", color: "#f472b6",
+    tag: "For Your Sister",
     wishes: [
-      "My first best friend, my forever person 💕",
-      "Growing up with you was the greatest adventure 🌸",
-      "May this year bring you everything your heart desires 🎀",
-      "You're not just my sister — you're my home 🏠",
-    ]},
-  { id: "boyfriend", icon: "💙", label: "Boyfriend",     color: "#60a5fa",
+      { text: "My first best friend, my forever person 💕",                        tone: "Heartfelt" },
+      { text: "Growing up with you was the greatest adventure 🌸",                 tone: "Nostalgic" },
+      { text: "May this year bring you everything your heart desires 🎀",           tone: "Hopeful" },
+      { text: "You're not just my sister — you're my home 🏠",                     tone: "Warm" },
+      { text: "I stole your clothes and you stole my heart — fair trade 😄",       tone: "Funny" },
+      { text: "Watching you grow has been the privilege of my life 🌷",             tone: "Proud" },
+      { text: "No one laughs at our inside jokes the way we do 🤣",                tone: "Playful" },
+      { text: "You are proof that siblings can be soulmates too 💖",               tone: "Poetic" },
+    ],
+  },
+  {
+    id: "boyfriend", icon: "💙", label: "Boyfriend", color: "#60a5fa",
+    tag: "For Your Partner",
     wishes: [
-      "Every day with you feels like the universe said yes 💙",
-      "You make ordinary moments feel extraordinary 🌊",
-      "Here's to a birthday as wonderful as you make me feel ✨",
-      "You're my favourite notification, always 📱💙",
-    ]},
-  { id: "mom", icon: "🌺", label: "Mom",              color: "#f97316",
+      { text: "Every day with you feels like the universe said yes 💙",             tone: "Romantic" },
+      { text: "You make ordinary moments feel extraordinary 🌊",                    tone: "Poetic" },
+      { text: "Here's to a birthday as wonderful as you make me feel ✨",           tone: "Sweet" },
+      { text: "You're my favourite notification, always 📱💙",                      tone: "Playful" },
+      { text: "Before you, I didn't know love could feel this easy 🌙",             tone: "Heartfelt" },
+      { text: "Happy birthday to the one I choose every single day 💫",             tone: "Romantic" },
+      { text: "You deserve the world — starting with the best birthday 🌍",         tone: "Celebratory" },
+      { text: "Growing old with you is the adventure I signed up for 🏔️",          tone: "Hopeful" },
+    ],
+  },
+  {
+    id: "mom", icon: "🌺", label: "Mom", color: "#f97316",
+    tag: "For Your Mom",
     wishes: [
-      "Everything I am, I owe to your love and strength 🌺",
-      "Your hugs are my safe place, always and forever 💛",
-      "Happy birthday to the woman who makes the world better 🌸",
-      "Thank you for believing in me before I believed in myself 🙏",
-    ]},
-  { id: "brother", icon: "🤝", label: "Brother",        color: "#34d399",
+      { text: "Everything I am, I owe to your love and strength 🌺",                tone: "Grateful" },
+      { text: "Your hugs are my safe place, always and forever 💛",                 tone: "Warm" },
+      { text: "Happy birthday to the woman who makes the world better 🌸",          tone: "Celebratory" },
+      { text: "Thank you for believing in me before I believed in myself 🙏",       tone: "Heartfelt" },
+      { text: "You taught me to be brave, kind, and never skip dessert 🎂",         tone: "Playful" },
+      { text: "A million thank-yous could never match what you've given me 🌼",     tone: "Poetic" },
+      { text: "Today the universe celebrates the day it gave us you ☀️",            tone: "Poetic" },
+      { text: "You're the reason home always feels like the best place 🏡",         tone: "Nostalgic" },
+    ],
+  },
+  {
+    id: "brother", icon: "🤝", label: "Brother", color: "#34d399",
+    tag: "For Your Brother",
     wishes: [
-      "The original partner in crime — happy birthday! 🎮",
-      "You've always had my back. Now go enjoy your day! 💪",
-      "Growing older together beats growing apart 🌱",
-      "Legend, role model, annoyance — I love you 😄",
-    ]},
-  { id: "crush", icon: "🧡", label: "Crush",           color: "#fb923c",
+      { text: "The original partner in crime — happy birthday! 🎮",                tone: "Playful" },
+      { text: "You've always had my back. Now go enjoy your day! 💪",              tone: "Warm" },
+      { text: "Growing older together beats growing apart 🌱",                     tone: "Heartfelt" },
+      { text: "Legend, role model, annoyance — I love you 😄",                    tone: "Funny" },
+      { text: "You were my first rival and my longest friend 🏅",                  tone: "Nostalgic" },
+      { text: "No one else can make me laugh and furious in one sentence 😂",      tone: "Funny" },
+      { text: "Here's to the guy who turned chaos into our best memories 🔥",      tone: "Celebratory" },
+      { text: "I'm proud of the man you've become — genuinely 🙌",                tone: "Proud" },
+    ],
+  },
+  {
+    id: "crush", icon: "🧡", label: "Crush", color: "#fb923c",
+    tag: "For Your Crush",
     wishes: [
-      "Wishing the most beautiful person the most beautiful day 🌅",
-      "You deserve a day as bright as your smile ☀️",
-      "Hope this birthday surprises you the way you surprise me 💫",
-      "Today's all about you — and you deserve every moment 🎁",
-    ]},
-  { id: "boss", icon: "🏆", label: "Boss",             color: "#fbbf24",
+      { text: "Wishing the most beautiful person the most beautiful day 🌅",       tone: "Admiring" },
+      { text: "You deserve a day as bright as your smile ☀️",                      tone: "Sweet" },
+      { text: "Hope this birthday surprises you the way you surprise me 💫",       tone: "Flirty" },
+      { text: "Today's all about you — and you deserve every moment 🎁",           tone: "Genuine" },
+      { text: "Just a little something to let you know you're unforgettable 🌸",   tone: "Subtle" },
+      { text: "May your day be as lovely as the way you make me feel 🧡",          tone: "Flirty" },
+      { text: "Thinking of you today — and if I'm honest, most days 😊",           tone: "Honest" },
+      { text: "Here's hoping this year brings you closer to your dreams ✨",        tone: "Hopeful" },
+    ],
+  },
+  {
+    id: "boss", icon: "🏆", label: "Boss", color: "#fbbf24",
+    tag: "For Your Boss",
     wishes: [
-      "Thank you for leading with vision and kindness 🏆",
-      "Wishing you rest, joy, and everything you've earned 🥂",
-      "The team wouldn't be the same without your guidance 💼",
-      "May this birthday mark the start of your best year yet 🚀",
-    ]},
-  { id: "girlfriend", icon: "💖", label: "Girlfriend",   color: "#f43f5e",
+      { text: "Thank you for leading with vision and kindness 🏆",                 tone: "Respectful" },
+      { text: "Wishing you rest, joy, and everything you've earned 🥂",            tone: "Celebratory" },
+      { text: "The team wouldn't be the same without your guidance 💼",            tone: "Appreciative" },
+      { text: "May this birthday mark the start of your best year yet 🚀",         tone: "Motivating" },
+      { text: "You push us to be better — today we celebrate you 🌟",             tone: "Grateful" },
+      { text: "Great leaders are rare. Thank you for being one of them 🎯",        tone: "Formal" },
+      { text: "Your belief in the team inspires us every single day 💡",           tone: "Sincere" },
+      { text: "Wishing you a day off that's actually a day off 😄",                tone: "Funny" },
+    ],
+  },
+  {
+    id: "girlfriend", icon: "💖", label: "Girlfriend", color: "#f43f5e",
+    tag: "For Your Partner",
     wishes: [
-      "You are the reason I smile for no reason at all 💖",
-      "Every moment with you is a memory I treasure 📸",
-      "The world is better, softer, warmer — because of you 🌹",
-      "Happy birthday to the one who makes my heart skip 💓",
-    ]},
+      { text: "You are the reason I smile for no reason at all 💖",                tone: "Romantic" },
+      { text: "Every moment with you is a memory I treasure 📸",                   tone: "Sentimental" },
+      { text: "The world is better, softer, warmer — because of you 🌹",           tone: "Poetic" },
+      { text: "Happy birthday to the one who makes my heart skip 💓",              tone: "Sweet" },
+      { text: "You are my home, my calm, and my greatest adventure 🌍",            tone: "Heartfelt" },
+      { text: "Falling in love with you was the best decision I never planned 💫", tone: "Romantic" },
+      { text: "You make every ordinary Tuesday feel like a holiday ☀️",            tone: "Playful" },
+      { text: "Here's to the woman who rewrote my whole world 🥂",                 tone: "Celebratory" },
+    ],
+  },
+  {
+    id: "dad", icon: "🦁", label: "Dad", color: "#a78bfa",
+    tag: "For Your Dad",
+    wishes: [
+      { text: "You showed me what strength looks like — quiet and steady 🦁",      tone: "Proud" },
+      { text: "Happy birthday to my first hero and forever role model 🌟",         tone: "Heartfelt" },
+      { text: "Every lesson you taught me I carry with me every day 🎓",           tone: "Grateful" },
+      { text: "You never had all the answers — but you always had time for me 🕰️", tone: "Nostalgic" },
+      { text: "The older I get, the more I see you in me — and I'm glad 🌱",       tone: "Reflective" },
+      { text: "Thank you for being the calm in every storm 🌊",                    tone: "Warm" },
+      { text: "Dad jokes aside, you're genuinely the best 😄",                     tone: "Funny" },
+      { text: "Wishing you a birthday as great as the advice you've given 🚀",     tone: "Celebratory" },
+    ],
+  },
+  {
+    id: "bff-guy", icon: "🎮", label: "Best Friend (Guy)", color: "#38bdf8",
+    tag: "For Your Guy BFF",
+    wishes: [
+      { text: "Rare breed — the kind of friend that actually picks up 📞",          tone: "Real" },
+      { text: "We've been through too much for me not to celebrate you 🍻",         tone: "Genuine" },
+      { text: "Here's to the guy who knows all my chaos and stayed anyway 🤝",      tone: "Loyal" },
+      { text: "Happy birthday, legend. Try not to do anything I'd do 😂",           tone: "Funny" },
+      { text: "You've talked me off more ledges than you know — thank you 🌟",      tone: "Grateful" },
+      { text: "Brothers by choice are the best kind 🔥",                            tone: "Brotherhood" },
+      { text: "You make friendship feel like the easiest thing in the world 💙",    tone: "Warm" },
+      { text: "May your year be full of wins, good food, and zero Mondays 🎉",      tone: "Playful" },
+    ],
+  },
 ];
 
 /* ─── Testimonials ───────────────────────────────────────── */
@@ -225,9 +309,9 @@ export default function Home() {
 
   const activeCategory = WISH_CATEGORIES.find(c => c.id === wishCategory) ?? WISH_CATEGORIES[0];
 
-  function copyWish(wish: string) {
-    navigator.clipboard.writeText(wish).catch(() => {});
-    setCopiedWish(wish);
+  function copyWish(text: string) {
+    navigator.clipboard.writeText(text).catch(() => {});
+    setCopiedWish(text);
     setTimeout(() => setCopiedWish(null), 1800);
   }
 
@@ -305,15 +389,29 @@ export default function Home() {
                   <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
-              <div className="nav-dropdown absolute left-0 top-full pt-2 z-50" style={{ minWidth: 230 }}>
-                <div className="glass-card rounded-2xl py-2 shadow-2xl" style={{ background: "rgba(15,7,32,0.95)", border: "1px solid rgba(255,255,255,0.12)" }}>
-                  <div className="px-3 pb-1 pt-1 text-xs font-bold uppercase tracking-widest text-white/30">Popular Surprises</div>
+              <div className="nav-dropdown absolute left-0 top-full pt-2 z-50" style={{ minWidth: 260 }}>
+                <div className="glass-card rounded-2xl py-2 shadow-2xl" style={{ background: "rgba(15,7,32,0.97)", border: "1px solid rgba(255,255,255,0.12)" }}>
+                  <div className="px-4 pb-2 pt-2 flex items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-widest text-white/30">Popular Surprises</span>
+                  </div>
                   {WISH_CATEGORIES.map(cat => (
                     <a key={cat.id} href="#wish-section"
                       onClick={() => setWishCategory(cat.id)}
-                      className="flex items-center gap-3 px-4 py-2 text-sm text-white/75 hover:text-white hover:bg-white/5 transition-colors rounded-lg mx-1">
-                      <span style={{ color: cat.color }}>{cat.icon}</span>
-                      <span>Wishes for {cat.label}</span>
+                      className="flex items-center gap-3 px-3 py-2 mx-1 rounded-xl transition-all duration-150 group"
+                      style={{ background: wishCategory === cat.id ? `${cat.color}18` : "transparent" }}>
+                      <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg text-base"
+                        style={{ background: `${cat.color}22`, border: `1px solid ${cat.color}44` }}>
+                        {cat.icon}
+                      </span>
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-semibold text-white/85 group-hover:text-white transition-colors leading-tight">
+                          Wishes for {cat.label}
+                        </span>
+                        <span className="text-[10px] text-white/35">{cat.wishes.length} suggestions</span>
+                      </div>
+                      {wishCategory === cat.id && (
+                        <span className="ml-auto text-xs" style={{ color: cat.color }}>✓</span>
+                      )}
                     </a>
                   ))}
                 </div>
@@ -346,14 +444,20 @@ export default function Home() {
           <div className="md:hidden absolute inset-x-0 top-full z-40 glass-card mx-4 rounded-2xl p-4 shadow-2xl"
             style={{ background: "rgba(15,7,32,0.96)", border: "1px solid rgba(255,255,255,0.1)" }}>
             <div className="flex flex-col gap-1">
-              {WISH_CATEGORIES.slice(0, 4).map(cat => (
+              <div className="px-2 pb-1 text-[10px] font-bold uppercase tracking-widest text-white/30">Popular Wishes</div>
+              {WISH_CATEGORIES.map(cat => (
                 <a key={cat.id} href="#wish-section" onClick={() => { setWishCategory(cat.id); setNavOpen(false); }}
-                  className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-white/75 hover:bg-white/5">
-                  <span style={{ color: cat.color }}>{cat.icon}</span>
-                  <span>Wishes for {cat.label}</span>
+                  className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
+                  style={{ background: wishCategory === cat.id ? `${cat.color}18` : "transparent" }}>
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg text-base flex-shrink-0"
+                    style={{ background: `${cat.color}22`, border: `1px solid ${cat.color}44` }}>
+                    {cat.icon}
+                  </span>
+                  <span className="text-white/75">Wishes for {cat.label}</span>
+                  {wishCategory === cat.id && <span className="ml-auto text-xs" style={{ color: cat.color }}>✓</span>}
                 </a>
               ))}
-              <div className="my-1 border-t border-white/8" />
+              <div className="my-2 border-t border-white/8" />
               {["#features", "#how-it-works", "#testimonials", "#faq"].map((href, i) => (
                 <a key={href} href={href} onClick={() => setNavOpen(false)}
                   className="rounded-xl px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5">
@@ -619,26 +723,66 @@ export default function Home() {
           </RevealSection>
 
           {/* Wish cards grid */}
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {activeCategory.wishes.map((wish, i) => (
-              <RevealSection key={i} delay={`reveal-delay-${i + 1}`}>
-                <div className="wish-card glass-card rounded-2xl p-5 flex flex-col justify-between gap-3"
-                  style={{ border: "1px solid rgba(255,255,255,0.09)", minHeight: 130 }}>
-                  <p className="text-base leading-relaxed text-white/85 italic">&ldquo;{wish}&rdquo;</p>
+              <RevealSection key={i} delay={`reveal-delay-${(i % 5) + 1}`}>
+                <div
+                  className="wish-card glass-card rounded-2xl p-5 flex flex-col justify-between gap-4 h-full"
+                  style={{
+                    border: `1px solid ${activeCategory.color}22`,
+                    background: "rgba(15,7,32,0.7)",
+                    minHeight: 148,
+                  }}
+                >
+                  {/* Tone badge */}
                   <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-1 text-xs text-white/40">
-                      <span>{activeCategory.icon}</span>
-                      <span>For {activeCategory.label}</span>
-                    </span>
-                    <button onClick={() => copyWish(wish)}
-                      className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all duration-150"
+                    <span
+                      className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider"
                       style={{
-                        background: copiedWish === wish ? `${activeCategory.color}33` : "rgba(255,255,255,0.07)",
-                        color: copiedWish === wish ? activeCategory.color : "rgba(255,255,255,0.6)",
-                        border: `1px solid ${copiedWish === wish ? activeCategory.color + "44" : "rgba(255,255,255,0.1)"}`,
-                      }}>
-                      {copiedWish === wish ? "✓ Copied!" : "Copy wish"}
+                        background: `${activeCategory.color}1a`,
+                        color: activeCategory.color,
+                        border: `1px solid ${activeCategory.color}33`,
+                      }}
+                    >
+                      {wish.tone}
+                    </span>
+                    <span className="text-base opacity-60">{activeCategory.icon}</span>
+                  </div>
+
+                  {/* Wish text */}
+                  <p className="flex-1 text-sm leading-relaxed text-white/88 italic">
+                    &ldquo;{wish.text}&rdquo;
+                  </p>
+
+                  {/* Footer actions */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => copyWish(wish.text)}
+                      className="flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-bold transition-all duration-200"
+                      style={{
+                        background: copiedWish === wish.text ? `${activeCategory.color}33` : "rgba(255,255,255,0.06)",
+                        color: copiedWish === wish.text ? activeCategory.color : "rgba(255,255,255,0.55)",
+                        border: `1px solid ${copiedWish === wish.text ? activeCategory.color + "55" : "rgba(255,255,255,0.1)"}`,
+                        boxShadow: copiedWish === wish.text ? `0 0 12px ${activeCategory.color}33` : "none",
+                      }}
+                    >
+                      {copiedWish === wish.text ? (
+                        <><span>✓</span><span>Copied!</span></>
+                      ) : (
+                        <><span>📋</span><span>Copy wish</span></>
+                      )}
                     </button>
+                    <Link
+                      href={`/create?wish=${encodeURIComponent(wish.text)}`}
+                      className="flex items-center justify-center rounded-xl px-3 py-2 text-xs font-bold transition-all duration-200"
+                      style={{
+                        background: `${activeCategory.color}22`,
+                        color: activeCategory.color,
+                        border: `1px solid ${activeCategory.color}44`,
+                      }}
+                    >
+                      Use →
+                    </Link>
                   </div>
                 </div>
               </RevealSection>
@@ -791,15 +935,43 @@ export default function Home() {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="relative z-10 border-t px-6 py-8 text-center text-sm text-white/40"
+      <footer className="relative z-10 border-t px-6 pt-10 pb-8 text-center text-sm text-white/40"
         style={{ borderColor: "rgba(255,255,255,0.07)" }}>
-        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-4 mb-4">
+
+        {/* Nav links */}
+        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-4 mb-6">
           {["Features", "How it works", "Reviews", "FAQ"].map(item => (
             <a key={item} href={`#${item.toLowerCase().replace(/ /g, "-")}`}
               className="hover:text-white/70 transition-colors">{item}</a>
           ))}
         </div>
-        © {new Date().getFullYear()} {BRAND.name} · Built with 💜 · Private &amp; secure
+
+        {/* Developer credit */}
+        <div className="mb-3 flex items-center justify-center gap-2 flex-wrap">
+          <span className="text-white/25 text-xs uppercase tracking-widest">Crafted with</span>
+          <span className="animate-pulse text-base">❤️</span>
+          <span className="text-white/25 text-xs uppercase tracking-widest">by</span>
+          <span
+            className="font-bold"
+            style={{
+              fontFamily: '"Dancing Script", cursive',
+              background: "linear-gradient(135deg, #c020e0 0%, #f6c453 50%, #e040fb 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              filter: "drop-shadow(0 0 8px rgba(192,32,224,0.5))",
+              fontSize: "1.25rem",
+            }}
+          >
+            Shamim
+          </span>
+          <span className="text-base">✨</span>
+        </div>
+
+        {/* Copyright */}
+        <p className="text-xs text-white/25">
+          © {new Date().getFullYear()} {BRAND.name} · Private &amp; secure · All rights reserved
+        </p>
       </footer>
     </div>
   );
