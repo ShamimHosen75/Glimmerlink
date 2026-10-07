@@ -172,20 +172,6 @@ const WISH_CATEGORIES = [
       { text: "Wishing you a birthday as great as the advice you've given 🚀",     tone: "Celebratory" },
     ],
   },
-  {
-    id: "bff-guy", icon: "🎮", label: "Best Friend (Guy)", color: "#38bdf8",
-    tag: "For Your Guy BFF",
-    wishes: [
-      { text: "Rare breed — the kind of friend that actually picks up 📞",          tone: "Real" },
-      { text: "We've been through too much for me not to celebrate you 🍻",         tone: "Genuine" },
-      { text: "Here's to the guy who knows all my chaos and stayed anyway 🤝",      tone: "Loyal" },
-      { text: "Happy birthday, legend. Try not to do anything I'd do 😂",           tone: "Funny" },
-      { text: "You've talked me off more ledges than you know — thank you 🌟",      tone: "Grateful" },
-      { text: "Brothers by choice are the best kind 🔥",                            tone: "Brotherhood" },
-      { text: "You make friendship feel like the easiest thing in the world 💙",    tone: "Warm" },
-      { text: "May your year be full of wins, good food, and zero Mondays 🎉",      tone: "Playful" },
-    ],
-  },
 ];
 
 /* ─── Testimonials ───────────────────────────────────────── */
